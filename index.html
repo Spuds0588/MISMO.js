@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mismo.js Diagnostic Dashboard</title>
+    <style>
+        body { font-family: system-ui, sans-serif; padding: 20px; background: #f4f4f5; }
+        .dashboard { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        pre { background: #1e293b; color: #38bdf8; padding: 15px; border-radius: 6px; overflow: auto; max-height: 500px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>mismo.js | Diagnostic Dashboard</h1>
+        <p>Select a MISMO 3.4 XML file to parse directly in the browser thread.</p>
+        <input type="file" id="fileInput" accept=".xml" />
+        
+        <h2>Parsed JSON Output:</h2>
+        <pre id="output">Waiting for file...</pre>
+    </div>
+
+    <script type="module">
+        import { MismoEngine } from './src/MismoEngine.js';
+
+        document.getElementById('fileInput').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const text = await file.text();
+            const engine = new MismoEngine();
+            
+            try {
+                // Performance metric tracking (PRD requires < 1.5s for 10MB)
+                console.time('mismo-parse-timer');
+                const parsed = engine.parse(text);
+                console.timeEnd('mismo-parse-timer');
+                
+                document.getElementById('output').textContent = JSON.stringify(parsed, null, 2);
+                
+                console.log('[App] Extracted XLink Relationships:', engine.registry);
+                if(engine.registry.length > 0) {
+                   const sampleQuery = engine.getLinkedEntities(engine.registry[0].from);
+                   console.log(`[App] Entities linked to ${engine.registry[0].from}:`, sampleQuery);
+                }
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('output').textContent = `Runtime Error: ${err.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
