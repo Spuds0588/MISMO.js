@@ -76,3 +76,18 @@ console.log(newXmlString);
 
 ## Architectural Notes
 While `mismo.js` acts as a zero-dependency package for end-users, under the hood it leverages [fast-xml-parser](https://github.com/NaturalIntelligence/fast-xml-parser) for raw text manipulation to ensure 10MB+ ULDD/UCD files can be parsed in under 1.5 seconds without blocking the main browser thread. `fast-xml-parser` is bundled directly into the `dist/` build via Vite.
+
+## Test Data & Example Files
+
+To make testing easy, this repository includes official industry-standard MISMO XML sample files in the `/test-data` directory. These files are sourced from the Fannie Mae / Freddie Mac Uniform Mortgage Data Program (UMDP).
+
+- **UCD (Uniform Closing Dataset) Samples:** Represents complex, deeply nested MISMO 3.3/3.4 closing disclosure data.
+- **ULDD (Uniform Loan Delivery Dataset) Samples:** Represents massive loan delivery payloads.
+
+### How to test with them:
+1. Run `npm run dev` to launch the local diagnostic dashboard.
+2. Click **"Choose File"** in your browser.
+3. Select any `.xml` file from the `/test-data` folder in this repository.
+4. View the lightning-fast parsing times and XLink relationship mappings directly in your console and browser UI.
+
+*(Note: If you need the complete, exhaustive test suites for every edge case, you can download the official GSE test zip files directly from the [Fannie Mae UCD Tech Resources page](https://singlefamily.fanniemae.com/delivering/uniform-mortgage-data-program/uniform-closing-dataset).)*
