@@ -30,7 +30,7 @@ npm run dev
 Open the provided `localhost` URL in your browser and upload a `.xml` file to see the parsed JSON and XLink relationships in real-time.
 
 ### Building for Production
-To generate the final, minified distribution files (`dist/mismo.js` for ES Modules and `dist/mismo.umd.cjs` for legacy/Node):
+To generate the final, minified distribution files — `dist/mismo.js` (ES modules), `dist/mismo.umd.cjs` (UMD — Node/legacy bundlers), and `dist/mismo.iife.js` (IIFE — plain `<script>` tags, exposes `window.MismoJS`):
 
 ```bash
 npm run build
@@ -45,6 +45,69 @@ npm run test:extra  # Network suite: 9 additional public MISMO samples (needs in
 ```
 
 The suites assert that every leaf value and attribute survives `parse → compose` exactly, that output is well-formed with a single XML declaration, and that XLink relationships are indexed correctly.
+
+## Browser / Front-End Usage (no build step)
+
+mismo.js is browser-first: drop in **one `<script>` tag** and `window.MismoJS` is yours — no bundler, no npm, no build step. All `dist/` builds bundle the XML parser, so the end consumer needs zero dependencies.
+
+### Option A — classic `<script>` tag (recommended)
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.2.0/dist/mismo.iife.js"></script>
+<script>
+  const engine = new MismoJS.MismoEngine();
+  const parsed = engine.parse(`<MESSAGE>…</MESSAGE>`);
+</script>
+```
+
+Use `@main` instead of a pinned tag to always track the latest commit. Self-hosting? Serve `dist/mismo.iife.js` from your own static assets and point the `<script src>` at it.
+
+### Option B — ES module import
+
+```html
+<script type="module">
+  import { MismoEngine } from "https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.2.0/dist/mismo.js";
+  const engine = new MismoEngine();
+</script>
+```
+
+### Upload a MISMO XML file → parse → export back to XML
+
+A complete, copy-pasteable example with no framework required (see [`examples/browser-demo.html`](./examples/browser-demo.html) for a styled, runnable version):
+
+```html
+<input type="file" id="xmlFile" accept=".xml" />
+<pre id="output"></pre>
+<button id="download" disabled>Export MISMO XML</button>
+
+<script src="https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.2.0/dist/mismo.iife.js"></script>
+<script>
+  const engine = new MismoJS.MismoEngine();
+
+  // 1. Upload → parse
+  document.getElementById("xmlFile").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const xml = await file.text();              // read the uploaded .xml
+    window.parsed = engine.parse(xml);          // MISMO XML → JS object
+    document.getElementById("output").textContent =
+      JSON.stringify(window.parsed, null, 2);
+    document.getElementById("download").disabled = false;
+  });
+
+  // 2. Export → compose + download as .xml
+  document.getElementById("download").addEventListener("click", () => {
+    if (!window.parsed) return;
+    const xml = engine.compose(window.parsed);  // JS object → MISMO XML
+    const url = URL.createObjectURL(new Blob([xml], { type: "application/xml" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "exported-mismo.xml";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+</script>
+```
 
 ## Quick Start Usage
 

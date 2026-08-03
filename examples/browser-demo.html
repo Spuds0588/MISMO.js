@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MISMO.js — Browser Demo</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --border: #334155;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #22c55e;
+      --accent-2: #38bdf8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.55;
+    }
+    header {
+      padding: 2.5rem 1.5rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header h1 { margin: 0 0 .25rem; font-size: 1.6rem; }
+    header p { margin: 0; color: var(--muted); }
+    header code { color: var(--accent-2); background: var(--panel); padding: .1em .4em; border-radius: 4px; }
+    main { max-width: 900px; margin: 0 auto; padding: 1.5rem; display: grid; gap: 1.25rem; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .card h2 { margin: 0 0 .9rem; font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    .row { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
+    input[type="file"]::file-selector-button {
+      background: var(--accent);
+      color: #052e16;
+      border: none;
+      padding: .55rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button {
+      background: var(--accent-2);
+      color: #082f49;
+      border: none;
+      padding: .55rem 1.1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    #stats { color: var(--muted); font-size: .9rem; margin-left: auto; white-space: nowrap; }
+    #status { color: var(--accent); font-weight: 600; }
+    #status.error { color: #f87171; }
+    pre {
+      background: #0b1220;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow: auto;
+      max-height: 420px;
+      font-family: var(--mono);
+      font-size: .8rem;
+      margin: 0;
+      white-space: pre;
+    }
+    .hint { color: var(--muted); font-size: .9rem; margin: 0; }
+    a { color: var(--accent-2); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MISMO.js — Browser Demo</h1>
+    <p>
+      Loaded via a plain <code>&lt;script&gt;</code> tag (no build step, no npm).
+      Upload a MISMO <code>.xml</code> file to parse it, then export an edited
+      copy as a downloadable <code>.xml</code> file.
+    </p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1 · Pick a MISMO XML file</h2>
+      <div class="row">
+        <input type="file" id="xmlFile" accept=".xml,text/xml,application/xml" />
+        <span id="status">Waiting for a file…</span>
+        <span id="stats"></span>
+      </div>
+      <p class="hint" style="margin-top:.75rem">
+        Try one of the bundled samples, e.g. <code>test-files/Purchase Fixed UCD v2.0.xml</code>.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>2 · Parsed result (JSON)</h2>
+      <pre id="output">// engine.parse(xml) — the result will appear here…</pre>
+    </section>
+
+    <section class="card">
+      <h2>3 · Export XML</h2>
+      <div class="row">
+        <button id="download" disabled>⬇ Export MISMO XML</button>
+        <p class="hint">Runs engine.compose(parsed) on the uploaded file and downloads the result.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 1) Load the library with a plain script tag: window.MismoJS is created.
+       Try the local dist/ first, then fall back to the jsDelivr CDN build. -->
+  <script src="../dist/mismo.iife.js" onerror="loadFromCDN()"></script>
+  <script>
+    function loadFromCDN() {
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@main/dist/mismo.iife.js";
+      document.head.appendChild(s);
+    }
+  </script>
+  <script>
+    const statusEl = document.getElementById("status");
+    const statsEl = document.getElementById("stats");
+    const outputEl = document.getElementById("output");
+    const downloadBtn = document.getElementById("download");
+    const fileInput = document.getElementById("xmlFile");
+
+    let parsed = null;
+
+    // 2) Parse an uploaded .xml file (FileReader / file.text()).
+    fileInput.addEventListener("change", async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      try {
+        statusEl.classList.remove("error");
+        statusEl.textContent = "Parsing…";
+        const xml = await file.text();
+        const t0 = performance.now();
+
+        parsed = new MismoJS.MismoEngine().parse(xml);
+
+        const ms = (performance.now() - t0).toFixed(1);
+        statusEl.textContent = `✓ Parsed ${file.name}`;
+        statsEl.textContent = `${(xml.length / 1024).toFixed(1)} KB in ${ms} ms`;
+        outputEl.textContent = JSON.stringify(parsed, null, 2);
+        downloadBtn.disabled = false;
+      } catch (err) {
+        statusEl.classList.add("error");
+        statusEl.textContent = `✗ Parse failed: ${err.message}`;
+        outputEl.textContent = err.stack || String(err);
+        downloadBtn.disabled = true;
+      }
+    });
+
+    // 3) Export: compose back to XML and trigger a download.
+    downloadBtn.addEventListener("click", () => {
+      if (!parsed) return;
+      const xml = new MismoJS.MismoEngine().compose(parsed);
+      const blob = new Blob([xml], { type: "application/xml" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "exported-mismo.xml";
+      a.click();
+      URL.revokeObjectURL(url);
+      statusEl.textContent = "✓ Exported exported-mismo.xml";
+    });
+  </script>
+</body>
+</html>
