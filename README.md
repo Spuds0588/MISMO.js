@@ -1,13 +1,14 @@
 # MISMO.js
 
-A lightweight, client-optimized library to read, manipulate, and generate MISMO 3.4 compliant XML files directly in the browser or Node.js. 
+A lightweight, client-optimized library to read, manipulate, and generate MISMO 3.4 compliant XML files directly in the browser or Node.js.
 
 Designed for modern mortgage tech (Point-of-Sale portals, digital closing dashboards, etc.), `mismo.js` translates dense MISMO XML payloads into predictable, developer-friendly JavaScript objects in milliseconds.
 
 ## Features
 
 - **Bi-directional Processing:** Translate MISMO 3.4 XML to JSON and serialize it back to XML seamlessly.
-- **Predictable Schema Arrays:** Automatically enforces known MISMO collection blocks (e.g., `LOAN`, `PARTY`, `PROPERTY`) into arrays, eliminating the classic XML-to-JSON defect where single elements parse as objects instead of lists.
+- **Exact Data Fidelity:** Values are preserved as exact strings — money amounts (`"240000.00"`), rates (`"9.0000"`), and padded identifiers (`"000123"`) are never silently coerced to JS numbers.
+- **Predictable Schema Arrays:** Automatically enforces known MISMO collection blocks (e.g., `LOAN`, `PARTY`, `PROPERTY`, `DOCUMENT_SET`, `DEAL_SET`) into arrays, eliminating the classic XML-to-JSON defect where single elements parse as objects instead of lists.
 - **Automated XLink Resolution:** Indexes `<RELATIONSHIPS>` arrays via `xlink:from` and `xlink:to` attributes automatically during parsing.
 - **Browser-First Architecture:** Bundles a lightning-fast XML parser directly into the distribution payload, requiring zero external dependencies for the end consumer.
 
@@ -25,6 +26,7 @@ To test the parser directly in your browser with a local MISMO XML file:
 ```bash
 npm run dev
 ```
+
 Open the provided `localhost` URL in your browser and upload a `.xml` file to see the parsed JSON and XLink relationships in real-time.
 
 ### Building for Production
@@ -33,6 +35,16 @@ To generate the final, minified distribution files (`dist/mismo.js` for ES Modul
 ```bash
 npm run build
 ```
+
+### Testing
+Two automated test suites verify the engine against real MISMO sample files:
+
+```bash
+npm test            # Offline suite: the bundled UCD v2.0 samples in /test-files
+npm run test:extra  # Network suite: 9 additional public MISMO samples (needs internet)
+```
+
+The suites assert that every leaf value and attribute survives `parse → compose` exactly, that output is well-formed with a single XML declaration, and that XLink relationships are indexed correctly.
 
 ## Quick Start Usage
 
@@ -79,7 +91,7 @@ While `mismo.js` acts as a zero-dependency package for end-users, under the hood
 
 ## Test Data & Example Files
 
-To make testing easy, this repository includes official industry-standard MISMO XML sample files in the `/test-data` directory. These files are sourced from the Fannie Mae / Freddie Mac Uniform Mortgage Data Program (UMDP).
+To make testing easy, this repository includes official industry-standard MISMO XML sample files in the `/test-files` directory. These files are sourced from the Fannie Mae / Freddie Mac Uniform Mortgage Data Program (UMDP).
 
 - **UCD (Uniform Closing Dataset) Samples:** Represents complex, deeply nested MISMO 3.3/3.4 closing disclosure data.
 - **ULDD (Uniform Loan Delivery Dataset) Samples:** Represents massive loan delivery payloads.
@@ -87,7 +99,25 @@ To make testing easy, this repository includes official industry-standard MISMO 
 ### How to test with them:
 1. Run `npm run dev` to launch the local diagnostic dashboard.
 2. Click **"Choose File"** in your browser.
-3. Select any `.xml` file from the `/test-data` folder in this repository.
+3. Select any `.xml` file from the `/test-files` folder in this repository.
 4. View the lightning-fast parsing times and XLink relationship mappings directly in your console and browser UI.
 
 *(Note: If you need the complete, exhaustive test suites for every edge case, you can download the official GSE test zip files directly from the [Fannie Mae UCD Tech Resources page](https://singlefamily.fanniemae.com/delivering/uniform-mortgage-data-program/uniform-closing-dataset).)*
+
+## Reporting Parsing Issues
+
+Found a file that parses incorrectly, loses data, or throws? **Please file a GitHub issue** — a reproducible sample is the single most valuable thing you can include.
+
+We can't fix what we can't reproduce, so please use the [Parsing bug report template](https://github.com/Spuds0588/MISMO.js/issues/new/choose) and include:
+
+1. **Example MISMO XML (required):** Paste the smallest XML snippet that reproduces the problem, or attach a `.xml` file.
+   - *Data privacy:* replace all real borrower/PII data (names, SSNs, loan numbers, addresses) with placeholders first.
+2. **Engine version:** the `mismo.js` version you're using (see `package.json`).
+3. **Environment:** browser + version, or Node.js version.
+4. **Expected vs. actual behavior:** what you expected the parsed JSON to look like vs. what you got, including any error message and stack trace.
+
+**Before filing, please run the repro through `npm test` and `npm run test:extra`** — if it reproduces there, attach the sample file to the issue so we can add it to the test suite permanently.
+
+## Versioning
+
+See [CHANGELOG.md](./CHANGELOG.md) for release notes. Releases are tagged on GitHub (e.g., `v0.2.0`).

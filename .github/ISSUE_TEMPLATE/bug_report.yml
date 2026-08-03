@@ -1,0 +1,90 @@
+name: Parsing bug report
+description: Report a parsing issue with MISMO XML — include example data
+title: "[Parsing] <short summary of the bug>"
+labels: ["bug", "parsing"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a parsing bug! **A reproducible
+        example is required** — we cannot fix what we cannot reproduce. Please
+        fill out every field below.
+
+        🔒 **Privacy:** replace all real borrower/PII data (names, SSNs, loan
+        numbers, addresses) with placeholders before pasting your XML sample.
+  - type: textarea
+    id: description
+    attributes:
+      label: What's wrong?
+      description: Describe the bug in a sentence or two.
+      placeholder: "Parsing this file drops the trailing .00 from money amounts / throws / produces wrong array shapes…"
+    validations:
+      required: true
+  - type: textarea
+    id: example-xml
+    attributes:
+      label: Example MISMO XML (required)
+      description: |
+        Paste the smallest XML snippet that reproduces the issue, or attach a
+        `.xml` file. If the file is large, trim it down while keeping the
+        failure — or attach the full (sanitized) file.
+      placeholder: "<MESSAGE>…</MESSAGE>"
+      render: xml
+    validations:
+      required: true
+  - type: checkboxes
+    id: sanitize
+    attributes:
+      label: Data privacy
+      options:
+        - label: I've removed/replaced all real borrower and PII data in the sample
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: mismo.js version
+      description: The version from package.json (e.g. 0.2.0), or the git commit you're on.
+      placeholder: "0.2.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Browser — Chrome
+        - Browser — Firefox
+        - Browser — Safari
+        - Browser — Edge
+        - Node.js
+        - Deno
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: env-version
+    attributes:
+      label: Environment version
+      description: e.g. Chrome 126, Node 22.
+      placeholder: "Node 22"
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should the parsed JSON / composed XML look like?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happens — include the full error message and stack trace if one is thrown.
+      render: shell
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        **Before submitting**, if you can, run the snippet through `npm test`
+        and `npm run test:extra` and note the results. Samples that reproduce
+        reliably get added to the test suite permanently.
