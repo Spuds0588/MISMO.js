@@ -408,26 +408,6 @@
     .feature-card code { background: var(--accent-soft); border-radius: 2px; padding: 1px 4px; font-size: .88em; }
     @media (max-width: 860px) { .features { grid-template-columns: 1fr; } }
 
-    /* ---------- Testimonials ---------- */
-    .carousel { max-width: 700px; margin: 44px auto 0; position: relative; }
-    .t-card { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 34px 38px; box-shadow: var(--shadow); display: none; }
-    .t-card.active { display: block; animation: fadeIn .3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-    .t-card blockquote { margin: 0 0 20px; font-size: 1.1rem; line-height: 1.75; color: var(--ink); font-style: italic; }
-    .t-card blockquote::before { content: "“"; color: var(--accent); font-size: 2.2rem; line-height: 0; vertical-align: -14px; margin-right: 3px; font-weight: 700; }
-    .t-author { display: flex; align-items: center; gap: 12px; font-size: .84rem; color: var(--slate); }
-    .t-avatar {
-      width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--accent);
-      color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: .8rem; font-style: normal;
-    }
-    .t-author b { display: block; font-weight: 700; color: var(--ink); }
-    .t-author span { font-size: .78rem; }
-    .t-cite { font-size: .78rem; color: var(--faint); font-style: normal; }
-    .carousel-controls { display: flex; justify-content: center; gap: 12px; margin-top: 22px; }
-    .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
-    .carousel-dots button { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--faint); background: transparent; cursor: pointer; padding: 0; transition: all .2s; }
-    .carousel-dots button.active { background: var(--accent); border-color: var(--accent); }
-
     /* ---------- FAQ ---------- */
     .faq-list { max-width: 780px; margin: 40px auto 0; }
     .faq-item { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 20px 26px; box-shadow: var(--shadow); margin-bottom: 14px; }
@@ -724,52 +704,11 @@ const out  = engine.compose(json);  // exactly one &lt;?xml&gt;, attributes inta
   </section>
 
 
-  <!-- ================= TESTIMONIALS ================= -->
-  <section class="wash" id="testimonials">
-    <div class="container">
-      <div class="section-heading reveal">
-        <span class="kicker">V · Field Notes</span>
-        <h2>What practitioners say</h2>
-      </div>
-      <div class="carousel reveal">
-        <div class="t-card active">
-          <blockquote>We replaced a hand-rolled parser that was quietly truncating loan amounts. MISMO.js preserves <code>240000.00</code> exactly — it found data bugs in our old pipeline on day one.</blockquote>
-          <div class="t-author">
-            <div class="t-avatar">JT</div>
-            <div><b>Mortgage Tech Lead</b><span>LOS integration, US retail lending</span></div>
-            <span class="t-cite">[1]</span>
-          </div>
-        </div>
-        <div class="t-card">
-          <blockquote>The XLink registry alone saved us weeks. Pointing a relationship index at our appraisal data just works — no custom traversal code to maintain.</blockquote>
-          <div class="t-author">
-            <div class="t-avatar">MR</div>
-            <div><b>Product Engineer</b><span>Appraisal &amp; valuation platform</span></div>
-            <span class="t-cite">[2]</span>
-          </div>
-        </div>
-        <div class="t-card">
-          <blockquote>Round-trips our seller/servicer files with zero drift. Single declaration, well-formed, every single export — the exact thing generic XML libraries cannot promise.</blockquote>
-          <div class="t-author">
-            <div class="t-avatar">AK</div>
-            <div><b>Integration Engineer</b><span>Secondary market data services</span></div>
-            <span class="t-cite">[3]</span>
-          </div>
-        </div>
-        <div class="carousel-dots" id="carouselDots"></div>
-        <div class="carousel-controls">
-          <button class="btn btn-outline btn-sm" id="prevT">← Prev</button>
-          <button class="btn btn-primary btn-sm" id="nextT">Next →</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ================= FAQ ================= -->
   <section id="faq">
     <div class="container">
       <div class="section-heading reveal">
-        <span class="kicker">VI · Common Questions</span>
+        <span class="kicker">V · Common Questions</span>
         <h2>MISMO.js — frequently asked questions</h2>
         <p class="lede">Straight answers for developers evaluating MISMO.js.</p>
       </div>
@@ -806,7 +745,7 @@ const out  = engine.compose(json);  // exactly one &lt;?xml&gt;, attributes inta
   <section class="wash" id="guarantee">
     <div class="container">
       <div class="section-heading reveal">
-        <span class="kicker">VII · Licensing &amp; Assurance</span>
+        <span class="kicker">VI · Licensing &amp; Assurance</span>
         <h2>Free, open, and fully transparent</h2>
         <p class="lede">No trial clocks, no license keys, no vendor lock-in. The code is right there on GitHub — audit it, fork it, run it in your own pipeline.</p>
       </div>
@@ -828,31 +767,20 @@ const out  = engine.compose(json);  // exactly one &lt;?xml&gt;, attributes inta
   <section id="author">
     <div class="container">
       <div class="section-heading reveal">
-        <span class="kicker">VIII · About the Author</span>
+        <span class="kicker">VII · Author</span>
         <h2>Built by Corey Burns</h2>
-        <p class="lede">MISMO.js is developed and maintained by a Minneapolis-based technologist who has spent years inside mortgage technology.</p>
+        <p class="lede">MISMO.js is an open-source project built and maintained by Corey Burns.</p>
       </div>
       <div class="author-card reveal">
         <div class="author-avatar">CB</div>
         <h3>Corey Burns</h3>
         <p class="a-role">Systems Architect · Product Enablement Lead</p>
-        <p>
-          Corey builds developer tools for the mortgage industry — originator portals, digital closing
-          flows, and the data pipelines that move loan files between systems. MISMO.js grew out of the
-          same pain every integration engineer knows: generic XML parsers quietly corrupting the money,
-          rates, and identifiers that the whole industry depends on.
-        </p>
-        <p>
-          If your team is adopting MISMO 3.x, UCD, or ULAD — or just trying to stop losing data to your
-          current parser — <b>consider working with me</b>. I bring the same fidelity-first discipline to
-          integrations, data pipelines, and developer tooling, from architecture review to full implementation.
-        </p>
+        <p>Built by Corey Burns — Minneapolis-based, working in mortgage technology.</p>
         <div class="author-links">
-          <a class="btn btn-primary" href="https://www.linkedin.com/in/coreytburns" target="_blank" rel="noopener">Connect on LinkedIn</a>
-          <a class="btn btn-outline" href="https://github.com/Spuds0588" target="_blank" rel="noopener">GitHub Profile</a>
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/coreytburns" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn btn-outline" href="https://github.com/Spuds0588" target="_blank" rel="noopener">GitHub</a>
           <a class="btn btn-outline" href="https://linktr.ee/CoreyBurns" target="_blank" rel="noopener">Linktree</a>
         </div>
-        <p class="a-note">Open to consulting and contract work — the fastest way to reach me is LinkedIn.</p>
       </div>
     </div>
   </section>
@@ -936,26 +864,6 @@ const out  = engine.compose(json);  // exactly one &lt;?xml&gt;, attributes inta
       } else {
         reveals.forEach(function (el) { el.classList.add("visible"); });
       }
-
-      /* ---------- Testimonial carousel ---------- */
-      var cards = Array.prototype.slice.call(document.querySelectorAll(".t-card"));
-      var dotsWrap = document.getElementById("carouselDots");
-      var current = 0;
-      cards.forEach(function (_, i) {
-        var b = document.createElement("button");
-        b.setAttribute("aria-label", "Testimonial " + (i + 1));
-        if (i === 0) b.classList.add("active");
-        b.addEventListener("click", function () { show(i); });
-        dotsWrap.appendChild(b);
-      });
-      var dots = Array.prototype.slice.call(dotsWrap.children);
-      function show(i) {
-        current = (i + cards.length) % cards.length;
-        cards.forEach(function (c, j) { c.classList.toggle("active", j === current); });
-        dots.forEach(function (d, j) { d.classList.toggle("active", j === current); });
-      }
-      document.getElementById("prevT").addEventListener("click", function () { show(current - 1); });
-      document.getElementById("nextT").addEventListener("click", function () { show(current + 1); });
 
       /* ---------- Live demo ---------- */
       var dropzone = document.getElementById("dropzone");
