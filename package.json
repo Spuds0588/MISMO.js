@@ -1,6 +1,6 @@
 {
   "name": "mismo.js",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Lightweight, client-optimized library to read, manipulate, and generate MISMO 3.4 XML files.",
   "type": "module",
   "main": "./dist/mismo.umd.cjs",
@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "node test/mismo.test.mjs",
+    "test": "node test/mismo.test.mjs && node test/mismo-uad36.test.mjs",
     "test:extra": "node test/mismo-extra.test.mjs"
   },
   "dependencies": {

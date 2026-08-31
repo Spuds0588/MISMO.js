@@ -43,7 +43,7 @@ npm run build
 Two automated test suites verify the engine against real MISMO sample files:
 
 ```bash
-npm test            # Offline suite: the bundled UCD v2.0 samples in /test-files
+npm test            # Offline suite: the bundled UCD v2.0 + UAD 3.6 samples, plus a network-fetched ULAD sample
 npm run test:extra  # Network suite: 9 additional public MISMO samples (needs internet)
 ```
 
@@ -56,7 +56,7 @@ mismo.js is browser-first: drop in **one `<script>` tag** and `window.MismoJS` i
 ### Option A — classic `<script>` tag (recommended)
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.2.0/dist/mismo.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.3.0/dist/mismo.iife.js"></script>
 <script>
   const engine = new MismoJS.MismoEngine();
   const parsed = engine.parse(`<MESSAGE>…</MESSAGE>`);
@@ -69,7 +69,7 @@ Use `@main` instead of a pinned tag to always track the latest commit. Self-host
 
 ```html
 <script type="module">
-  import { MismoEngine } from "https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.2.0/dist/mismo.js";
+  import { MismoEngine } from "https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.3.0/dist/mismo.js";
   const engine = new MismoEngine();
 </script>
 ```
@@ -83,7 +83,7 @@ A complete, copy-pasteable example with no framework required (see [`examples/br
 <pre id="output"></pre>
 <button id="download" disabled>Export MISMO XML</button>
 
-<script src="https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.2.0/dist/mismo.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Spuds0588/MISMO.js@v0.3.0/dist/mismo.iife.js"></script>
 <script>
   const engine = new MismoJS.MismoEngine();
 
@@ -160,7 +160,10 @@ While `mismo.js` acts as a zero-dependency package for end-users, under the hood
 To make testing easy, this repository includes official industry-standard MISMO XML sample files in the `/test-files` directory. These files are sourced from the Fannie Mae / Freddie Mac Uniform Mortgage Data Program (UMDP).
 
 - **UCD (Uniform Closing Dataset) Samples:** Represents complex, deeply nested MISMO 3.3/3.4 closing disclosure data.
-- **ULDD (Uniform Loan Delivery Dataset) Samples:** Represents massive loan delivery payloads.
+- **UAD 3.6 Samples** (`/test-files/uad36`): Official Fannie Mae / Freddie Mac Uniform Appraisal Dataset sample files on the **MISMO 3.6** reference model — URAR single-family, condo, manufactured-home, 2-4 unit, Appraisal Update, and Completion Reports. These exercise Windows CRLF line endings and heavy `xlink` relationship indexing.
+- **ULAD Samples:** The Uniform Loan Application Dataset (the URLA/1003 data). A public ULAD sample is fetched at test time via `npm test` (not vendored — third-party licensing).
+
+> **ULDD (Uniform Loan Delivery Dataset):** official ULDD samples (the MISMO 3.0.x loan-delivery line) are published behind the GSE sites' bot-protection and can't be downloaded automatically, so they aren't vendored. The bundled corpus covers MISMO 3.4 (UCD) and 3.6 (UAD) instead. Have a sanitized ULDD file that trips the engine? File an issue and we'll wire it into the suite.
 
 ### How to test with them:
 1. Run `npm run dev` to launch the local diagnostic dashboard.
@@ -186,4 +189,4 @@ We can't fix what we can't reproduce, so please use the [Parsing bug report temp
 
 ## Versioning
 
-See [CHANGELOG.md](./CHANGELOG.md) for release notes. Releases are tagged on GitHub (e.g., `v0.2.0`).
+See [CHANGELOG.md](./CHANGELOG.md) for release notes. Releases are tagged on GitHub (e.g., `v0.3.0`).

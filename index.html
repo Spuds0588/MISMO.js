@@ -54,7 +54,7 @@
     "@type": "SoftwareApplication",
     "name": "MISMO.js",
     "alternateName": "mismo.js",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Zero-dependency JavaScript engine for parsing, transforming, and generating MISMO 3.x mortgage XML in the browser or Node.js. Exact money, rate, and identifier fidelity, predictable arrays, XLink relationship indexing, and lossless round-trip.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any (browser, Node.js)",
@@ -103,7 +103,7 @@
         "name": "Does MISMO.js lose money amounts or padded identifiers?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. MISMO.js disables numeric coercion entirely, so values like 240000.00, 9.0000, and 000123 round-trip exactly as strings. An automated suite verifies 100% of leaf values and attributes survive round-trip across 13 real MISMO files."
+          "text": "No. MISMO.js disables numeric coercion entirely, so values like 240000.00, 9.0000, and 000123 round-trip exactly as strings. An automated suite verifies 100% of leaf values and attributes survive round-trip across 20 real MISMO files spanning MISMO 3.4 UCD, 3.6 UAD, and application data."
         }
       },
       {
@@ -490,7 +490,7 @@
   <!-- ================= HERO ================= -->
   <section class="hero" id="top">
     <div class="container hero-inner">
-      <span class="kicker">A Fidelity-First MISMO 3.x Engine — v0.2.0</span>
+      <span class="kicker">A Fidelity-First MISMO 3.x Engine — v0.3.0</span>
       <h1>Parse, transform &amp; generate MISMO mortgage XML — without losing a single cent</h1>
       <p class="subtitle">
         MISMO.js is a zero-dependency JavaScript engine that turns MISMO 3.x mortgage XML into clean,
@@ -518,7 +518,7 @@
 
       <div class="hero-stats">
         <div class="stat"><b>100%</b><span>leaf-value fidelity</span></div>
-        <div class="stat"><b>13</b><span>real files verified</span></div>
+        <div class="stat"><b>20</b><span>real files verified</span></div>
         <div class="stat"><b>0</b><span>runtime dependencies</span></div>
         <div class="stat"><b>39</b><span>predictable arrays</span></div>
       </div>
@@ -672,7 +672,7 @@ const out  = engine.compose(json);  // exactly one &lt;?xml&gt;, attributes inta
         <div class="feature-card">
           <div class="feature-icon">🔒</div>
           <h3>100% Data Fidelity</h3>
-          <p>No numeric coercion, ever. Money, rates, and padded identifiers round-trip exactly — verified across 13 real MISMO files (~956 KB).</p>
+          <p>No numeric coercion, ever. Money, rates, and padded identifiers round-trip exactly — verified across 20 real MISMO files (~1.7 MB), from MISMO 3.4 UCD closing data to 3.6 UAD appraisals.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">📦</div>
@@ -719,7 +719,7 @@ const out  = engine.compose(json);  // exactly one &lt;?xml&gt;, attributes inta
         </div>
         <div class="faq-item">
           <h3>Does MISMO.js lose money amounts or padded identifiers?</h3>
-          <p>No. MISMO.js disables numeric coercion entirely, so values like <code>240000.00</code>, <code>9.0000</code>, and <code>000123</code> round-trip exactly as strings. An automated suite verifies 100% of leaf values and attributes survive round-trip across 13 real MISMO files (~956 KB).</p>
+          <p>No. MISMO.js disables numeric coercion entirely, so values like <code>240000.00</code>, <code>9.0000</code>, and <code>000123</code> round-trip exactly as strings. An automated suite verifies 100% of leaf values and attributes survive round-trip across 20 real MISMO files (~1.7 MB).</p>
         </div>
         <div class="faq-item">
           <h3>Can I use MISMO.js without a build step?</h3>
@@ -803,7 +803,7 @@ const out  = engine.compose(json);  // exactly one &lt;?xml&gt;, attributes inta
           <a class="btn btn-primary btn-lg" href="https://github.com/Spuds0588/MISMO.js" target="_blank" rel="noopener">Get the code on GitHub</a>
           <a class="btn btn-outline btn-lg" href="#demo">Run it right here first</a>
         </div>
-        <p class="cta-note">v0.2.0 — data-integrity fixes live · Free forever. New to the project? Open an issue for any MISMO file that trips the engine.</p>
+        <p class="cta-note">v0.3.0 — UAD 3.6 appraisal + ULAD coverage added · Free forever. New to the project? Open an issue for any MISMO file that trips the engine.</p>
       </div>
     </div>
   </section>
