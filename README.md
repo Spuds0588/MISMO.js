@@ -1,5 +1,8 @@
 # MISMO.js
 
+> **Live demo:** <https://spuds0588.github.io/MISMO.js/> — try the parse → export loop in your browser
+> **Author:** [Corey Burns (Spuds0588)](https://github.com/Spuds0588) · [LinkedIn](https://www.linkedin.com/in/coreytburns) · [Linktree](https://linktr.ee/CoreyBurns) — open to consulting on MISMO / UCD / ULAD integrations
+
 A lightweight, client-optimized library to read, manipulate, and generate MISMO 3.4 compliant XML files directly in the browser or Node.js.
 
 Designed for modern mortgage tech (Point-of-Sale portals, digital closing dashboards, etc.), `mismo.js` translates dense MISMO XML payloads into predictable, developer-friendly JavaScript objects in milliseconds.
